@@ -1,1 +1,783 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>University Hub</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f1f5fb;
+  color: #172554;
+}
+
+header {
+  background: #102b59;
+  color: white;
+  padding: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 { font-size: 22px; }
+
+header span { color: #93c5fd; }
+
+nav {
+  background: #173968;
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  overflow-x: auto;
+}
+
+nav button {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 7px;
+  white-space: nowrap;
+}
+
+nav button:hover,
+nav button.active {
+  background: #3265a4;
+}
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 24px 16px;
+}
+
+section.page { display: none; }
+section.page.active { display: block; }
+
+.welcome {
+  background: linear-gradient(120deg,#102b59,#2563a8);
+  color: white;
+  padding: 28px;
+  border-radius: 14px;
+  margin-bottom: 24px;
+}
+
+.welcome p { margin-top: 10px; }
+
+h2 { margin-bottom: 18px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(210px,1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px #102b5910;
+}
+
+.card h3 { margin-bottom: 10px; }
+
+.card p {
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.card .emoji {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+button.action {
+  background: #2563a8;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 11px 16px;
+  margin-top: 14px;
+  cursor: pointer;
+}
+
+button.action:hover { background: #102b59; }
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  margin: 8px 0 15px;
+  font: inherit;
+}
+
+.question {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.option {
+  display: block;
+  padding: 9px;
+  cursor: pointer;
+}
+
+#result {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.progress {
+  height: 12px;
+  background: #dbeafe;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.progress div {
+  height: 100%;
+  width: 0%;
+  background: #2563a8;
+}
+
+video {
+  width: 100%;
+  max-width: 650px;
+  border-radius: 10px;
+  background: #102b59;
+}
+
+footer {
+  background: #102b59;
+  color: white;
+  text-align: center;
+  padding: 22px;
+  margin-top: 35px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎓 UNIVERSITY <span>HUB</span></h1>
+  <div>Student Portal</div>
+</header>
+
+<nav>
+  <button class="active" onclick="showPage('home',this)">Home</button>
+  <button onclick="showPage('subjects',this)">Subjects</button>
+  <button onclick="showPage('notes',this)">Notes</button>
+  <button onclick="showPage('quiz',this)">Quizzes</button>
+  <button onclick="showPage('videos',this)">Videos</button>
+  <button onclick="showPage('profile',this)">Profile</button>
+</nav>
+
+<main>
+
+<section id="home" class="page active">
+
+  <div class="welcome">
+    <h2>Welcome to University Hub!</h2>
+    <p>Your learning journey starts here. Study smarter, practise and prepare for your examinations.</p>
+  </div>
+
+  <h2>Your Study Dashboard</h2>
+
+  <div class="grid">
+    <div class="card">
+      <div class="emoji">📚</div>
+      <h3>My Subjects</h3>
+      <p>Organize your university courses.</p>
+      <button class="action" onclick="showPage('subjects')">Explore</button>
+    </div>
+
+    <div class="card">
+      <div class="emoji">📝</div>
+      <h3>Lecture Notes</h3>
+      <p>Access your learning materials.</p>
+      <button class="action" onclick="showPage('notes')">Open Notes</button>
+    </div>
+
+    <div class="card">
+      <div class="emoji">🧠</div>
+      <h3>Practice Quizzes</h3>
+      <p>Test your understanding.</p>
+      <button class="action" onclick="showPage('quiz')">Start Quiz</button>
+    </div>
+
+    <div class="card">
+      <div class="emoji">🎥</div>
+      <h3>Video Lessons</h3>
+      <p>Learn through educational videos.</p>
+      <button class="action" onclick="showPage('videos')">Watch Videos</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>My Learning Progress</h3>
+    <p id="scoreText">Quizzes completed: 0</p>
+    <div class="progress">
+      <div id="progressBar"></div>
+    </div>
+  </div>
+
+</section>
+
+<section id="subjects" class="page">
+  <h2>📚 My University Subjects</h2>
+  <div class="grid">
+    <div class="card"><h3>Mathematics</h3><p>Calculations, algebra and functions.</p></div>
+    <div class="card"><h3>Biology</h3><p>Cells, organisms and living systems.</p></div>
+    <div class="card"><h3>Chemistry</h3><p>Atoms, bonding and reactions.</p></div>
+    <div class="card"><h3>Physics</h3><p>Motion, energy and electricity.</p></div>
+    <div class="card"><h3>Computer Science</h3><p>Programming and computing.</p></div>
+    <div class="card"><h3>Communication</h3><p>Academic writing and communication.</p></div>
+  </div>
+  <p>You can replace these sample subjects with your actual university courses.</p>
+</section>
+
+<section id="notes" class="page">
+  <h2>📝 Lecture Notes</h2>
+  <div class="card">
+    <h3>My Study Notes</h3>
+    <p>Write your own study notes below.</p>
+    <textarea id="myNotes" rows="9" placeholder="Write your lecture notes here..."></textarea>
+    <button class="action" onclick="saveNotes()">Save Notes</button>
+    <p id="noteMessage"></p>
+  </div>
+</section>
+
+<section id="quiz" class="page">
+  <h2>🧠 Sample University Quiz</h2>
+
+  <div class="question">
+    <h3>1. What is the basic unit of life?</h3>
+    <label class="option"><input type="radio" name="q1" value="a"> A. Tissue</label>
+    <label class="option"><input type="radio" name="q1" value="b"> B. Cell</label>
+    <label class="option"><input type="radio" name="q1" value="c"> C. Organ</label>
+  </div>
+
+  <div class="question">
+    <h3>2. What is the chemical symbol for oxygen?</h3>
+    <label class="option"><input type="radio" name="q2" value="a"> A. O</label>
+    <label class="option"><input type="radio" name="q2" value="b"> B. Ox</label>
+    <label class="option"><input type="radio" name="q2" value="c"> C. Og</label>
+  </div>
+
+  <div class="question">
+    <h3>3. What is 5 × 6?</h3>
+    <label class="option"><input type="radio" name="q3" value="a"> A. 25</label>
+    <label class="option"><input type="radio" name="q3" value="b"> B. 35</label>
+    <label class="option"><input type="radio" name="q3" value="c"> C. 30</label>
+  </div>
+
+  <button class="action" onclick="markQuiz()">Submit Quiz</button>
+  <p id="result"></p>
+</section>
+
+<section id="videos" class="page">
+  <h2>🎥 Video Lessons</h2>
+  <div class="card">
+    <h3>My Educational Videos</h3>
+    <p>Your uploaded video lessons will appear here.</p>
+    <br>
+    <video controls>
+      <source src="lesson.mp4" type="video/mp4">
+      Your browser does not support video.
+    </video>
+    <p>Upload a video named lesson.mp4 to your repository to use this player.</p>
+  </div>
+</section>
+
+<section id="profile" class="page">
+  <h2>👤 Student Profile</h2>
+  <div class="card">
+    <h3>Student Information</h3>
+    <label>Student name</label>
+    <input id="studentName" placeholder="Enter your name">
+    <label>University</label>
+    <input id="university" placeholder="Enter university name">
+    <button class="action" onclick="saveProfile()">Save Profile</button>
+    <p id="profileMessage"></p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>© 2026 University Hub | Learn. Practise. Succeed.</p>
+</footer>
+
+<script>
+function showPage(id,button) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  if(button) button.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function saveNotes() {
+  localStorage.setItem('universityNotes',document.getElementById('myNotes').value);
+  document.getElementById('noteMessage').textContent = 'Notes saved!';
+}
+
+function markQuiz() {
+  const answers = {q1:'b',q2:'a',q3:'c'};
+  let score = 0;
+
+  for(let q in answers) {
+    const selected = document.querySelector('input[name="'+q+'"]:checked');
+    if(selected && selected.value === answers[q]) score++;
+  }
+
+  document.getElementById('result').textContent =
+    'Your score: ' + score + '/3';
+
+  let completed = Number(localStorage.getItem('quizCount') || 0) + 1;
+  localStorage.setItem('quizCount',completed);
+  localStorage.setItem('lastScore',score);
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const count = Number(localStorage.getItem('quizCount') || 0);
+  const score = Number(localStorage.getItem('lastScore') || 0);
+  document.getElementById('scoreText').textContent =
+    'Quizzes completed: ' + count + ' | Latest score: ' + score + '/3';
+  document.getElementById('progressBar').style.width =
+    (score/3*100) + '%';
+}
+
+function saveProfile() {
+  localStorage.setItem('studentName',document.getElementById('studentName').value);
+  localStorage.setItem('university',document.getElementById('university').value);
+  document.getElementById('profileMessage').textContent = 'Profile saved!';
+}
+
+window.addEventListener('load',() => {
+  document.getElementById('myNotes').value =
+    localStorage.getItem('universityNotes') || '';
+
+  document.getElementById('studentName').value =
+    localStorage.getItem('studentName') || '';
+
+  document.getElementById('university').value =
+    localStorage.getItem('university') || '';
+
+  updateProgress();
+});
+</script>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>University Hub</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f1f5fb;
+  color: #172554;
+}
+
+header {
+  background: #102b59;
+  color: white;
+  padding: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 { font-size: 22px; }
+
+header span { color: #93c5fd; }
+
+nav {
+  background: #173968;
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  overflow-x: auto;
+}
+
+nav button {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 7px;
+  white-space: nowrap;
+}
+
+nav button:hover,
+nav button.active {
+  background: #3265a4;
+}
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 24px 16px;
+}
+
+section.page { display: none; }
+section.page.active { display: block; }
+
+.welcome {
+  background: linear-gradient(120deg,#102b59,#2563a8);
+  color: white;
+  padding: 28px;
+  border-radius: 14px;
+  margin-bottom: 24px;
+}
+
+.welcome p { margin-top: 10px; }
+
+h2 { margin-bottom: 18px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(210px,1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px #102b5910;
+}
+
+.card h3 { margin-bottom: 10px; }
+
+.card p {
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.card .emoji {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+button.action {
+  background: #2563a8;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 11px 16px;
+  margin-top: 14px;
+  cursor: pointer;
+}
+
+button.action:hover { background: #102b59; }
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  margin: 8px 0 15px;
+  font: inherit;
+}
+
+.question {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.option {
+  display: block;
+  padding: 9px;
+  cursor: pointer;
+}
+
+#result {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.progress {
+  height: 12px;
+  background: #dbeafe;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.progress div {
+  height: 100%;
+  width: 0%;
+  background: #2563a8;
+}
+
+video {
+  width: 100%;
+  max-width: 650px;
+  border-radius: 10px;
+  background: #102b59;
+}
+
+footer {
+  background: #102b59;
+  color: white;
+  text-align: center;
+  padding: 22px;
+  margin-top: 35px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎓 UNIVERSITY <span>HUB</span></h1>
+  <div>Student Portal</div>
+</header>
+
+<nav>
+  <button class="active" onclick="showPage('home',this)">Home</button>
+  <button onclick="showPage('subjects',this)">Subjects</button>
+  <button onclick="showPage('notes',this)">Notes</button>
+  <button onclick="showPage('quiz',this)">Quizzes</button>
+  <button onclick="showPage('videos',this)">Videos</button>
+  <button onclick="showPage('profile',this)">Profile</button>
+</nav>
+
+<main>
+
+<section id="home" class="page active">
+
+  <div class="welcome">
+    <h2>Welcome to University Hub!</h2>
+    <p>Your learning journey starts here. Study smarter, practise and prepare for your examinations.</p>
+  </div>
+
+  <h2>Your Study Dashboard</h2>
+
+  <div class="grid">
+    <div class="card">
+      <div class="emoji">📚</div>
+      <h3>My Subjects</h3>
+      <p>Organize your university courses.</p>
+      <button class="action" onclick="showPage('subjects')">Explore</button>
+    </div>
+
+    <div class="card">
+      <div class="emoji">📝</div>
+      <h3>Lecture Notes</h3>
+      <p>Access your learning materials.</p>
+      <button class="action" onclick="showPage('notes')">Open Notes</button>
+    </div>
+
+    <div class="card">
+      <div class="emoji">🧠</div>
+      <h3>Practice Quizzes</h3>
+      <p>Test your understanding.</p>
+      <button class="action" onclick="showPage('quiz')">Start Quiz</button>
+    </div>
+
+    <div class="card">
+      <div class="emoji">🎥</div>
+      <h3>Video Lessons</h3>
+      <p>Learn through educational videos.</p>
+      <button class="action" onclick="showPage('videos')">Watch Videos</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>My Learning Progress</h3>
+    <p id="scoreText">Quizzes completed: 0</p>
+    <div class="progress">
+      <div id="progressBar"></div>
+    </div>
+  </div>
+
+</section>
+
+<section id="subjects" class="page">
+  <h2>📚 My University Subjects</h2>
+  <div class="grid">
+    <div class="card"><h3>Mathematics</h3><p>Calculations, algebra and functions.</p></div>
+    <div class="card"><h3>Biology</h3><p>Cells, organisms and living systems.</p></div>
+    <div class="card"><h3>Chemistry</h3><p>Atoms, bonding and reactions.</p></div>
+    <div class="card"><h3>Physics</h3><p>Motion, energy and electricity.</p></div>
+    <div class="card"><h3>Computer Science</h3><p>Programming and computing.</p></div>
+    <div class="card"><h3>Communication</h3><p>Academic writing and communication.</p></div>
+  </div>
+  <p>You can replace these sample subjects with your actual university courses.</p>
+</section>
+
+<section id="notes" class="page">
+  <h2>📝 Lecture Notes</h2>
+  <div class="card">
+    <h3>My Study Notes</h3>
+    <p>Write your own study notes below.</p>
+    <textarea id="myNotes" rows="9" placeholder="Write your lecture notes here..."></textarea>
+    <button class="action" onclick="saveNotes()">Save Notes</button>
+    <p id="noteMessage"></p>
+  </div>
+</section>
+
+<section id="quiz" class="page">
+  <h2>🧠 Sample University Quiz</h2>
+
+  <div class="question">
+    <h3>1. What is the basic unit of life?</h3>
+    <label class="option"><input type="radio" name="q1" value="a"> A. Tissue</label>
+    <label class="option"><input type="radio" name="q1" value="b"> B. Cell</label>
+    <label class="option"><input type="radio" name="q1" value="c"> C. Organ</label>
+  </div>
+
+  <div class="question">
+    <h3>2. What is the chemical symbol for oxygen?</h3>
+    <label class="option"><input type="radio" name="q2" value="a"> A. O</label>
+    <label class="option"><input type="radio" name="q2" value="b"> B. Ox</label>
+    <label class="option"><input type="radio" name="q2" value="c"> C. Og</label>
+  </div>
+
+  <div class="question">
+    <h3>3. What is 5 × 6?</h3>
+    <label class="option"><input type="radio" name="q3" value="a"> A. 25</label>
+    <label class="option"><input type="radio" name="q3" value="b"> B. 35</label>
+    <label class="option"><input type="radio" name="q3" value="c"> C. 30</label>
+  </div>
+
+  <button class="action" onclick="markQuiz()">Submit Quiz</button>
+  <p id="result"></p>
+</section>
+
+<section id="videos" class="page">
+  <h2>🎥 Video Lessons</h2>
+  <div class="card">
+    <h3>My Educational Videos</h3>
+    <p>Your uploaded video lessons will appear here.</p>
+    <br>
+    <video controls>
+      <source src="lesson.mp4" type="video/mp4">
+      Your browser does not support video.
+    </video>
+    <p>Upload a video named lesson.mp4 to your repository to use this player.</p>
+  </div>
+</section>
+
+<section id="profile" class="page">
+  <h2>👤 Student Profile</h2>
+  <div class="card">
+    <h3>Student Information</h3>
+    <label>Student name</label>
+    <input id="studentName" placeholder="Enter your name">
+    <label>University</label>
+    <input id="university" placeholder="Enter university name">
+    <button class="action" onclick="saveProfile()">Save Profile</button>
+    <p id="profileMessage"></p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>© 2026 University Hub | Learn. Practise. Succeed.</p>
+</footer>
+
+<script>
+function showPage(id,button) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  if(button) button.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function saveNotes() {
+  localStorage.setItem('universityNotes',document.getElementById('myNotes').value);
+  document.getElementById('noteMessage').textContent = 'Notes saved!';
+}
+
+function markQuiz() {
+  const answers = {q1:'b',q2:'a',q3:'c'};
+  let score = 0;
+
+  for(let q in answers) {
+    const selected = document.querySelector('input[name="'+q+'"]:checked');
+    if(selected && selected.value === answers[q]) score++;
+  }
+
+  document.getElementById('result').textContent =
+    'Your score: ' + score + '/3';
+
+  let completed = Number(localStorage.getItem('quizCount') || 0) + 1;
+  localStorage.setItem('quizCount',completed);
+  localStorage.setItem('lastScore',score);
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const count = Number(localStorage.getItem('quizCount') || 0);
+  const score = Number(localStorage.getItem('lastScore') || 0);
+  document.getElementById('scoreText').textContent =
+    'Quizzes completed: ' + count + ' | Latest score: ' + score + '/3';
+  document.getElementById('progressBar').style.width =
+    (score/3*100) + '%';
+}
+
+function saveProfile() {
+  localStorage.setItem('studentName',document.getElementById('studentName').value);
+  localStorage.setItem('university',document.getElementById('university').value);
+  document.getElementById('profileMessage').textContent = 'Profile saved!';
+}
+
+window.addEventListener('load',() => {
+  document.getElementById('myNotes').value =
+    localStorage.getItem('universityNotes') || '';
+
+  document.getElementById('studentName').value =
+    localStorage.getItem('studentName') || '';
+
+  document.getElementById('university').value =
+    localStorage.getItem('university') || '';
+
+  updateProgress();
+});
+</script>
+
+</body>
+</html>
+
